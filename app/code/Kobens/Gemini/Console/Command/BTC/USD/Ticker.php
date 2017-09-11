@@ -11,14 +11,17 @@ class Ticker extends \Symfony\Component\Console\Command\Command
 {
     const WEBSOCKET_URL = 'wss://api.gemini.com/v1/marketdata/btcusd';
 
+    const STDOUT_PREFIX = " "; // " " | "\t"
+    const STDOUT_COLUMN_SEPARATOR = "  "; // " " | "\t"
+
     protected $columns = [
         'Lowest Ask',
         'Highest Bid',
         'Spread',
-        'BTC / USD',
+        'Last Trade',
         "          BTC",
         "     USD",
-        "    Time",
+        "Time    ",
         "Heartbeat"
     ];
 
@@ -113,16 +116,15 @@ class Ticker extends \Symfony\Component\Console\Command\Command
             $output->writeln($this->getHeaders());
         }
 
-        $columns = $this->getCurrentState();
-        echo "\t",implode("\t",$columns),"\r";
+        echo self::STDOUT_PREFIX, implode(self::STDOUT_COLUMN_SEPARATOR, $this->getCurrentState()), "\r";
     }
 
     protected function getHeaders()
     {
-        $headers = "\t";
+        $headers = self::STDOUT_PREFIX;
         for ($i = 0, $j = count($this->columns); $i < $j; $i++) {
             if ($i <> 0) {
-                $headers .= "\t";
+                $headers .= self::STDOUT_COLUMN_SEPARATOR;
             }
             $headers .= Format::underline($this->columns[$i]);
         }
