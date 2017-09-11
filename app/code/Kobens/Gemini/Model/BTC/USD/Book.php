@@ -52,7 +52,7 @@ class Book
 
         if (isset(self::$book[$side][$price])) {
             $lastTime = self::$book[$side][$price]['time'];
-            if ($lastTime < $time) {
+            if ($lastTime <= $time) {
                 if ($remaining == 0) {
                     unset(self::$book[$side][$price]);
                 } else {
