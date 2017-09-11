@@ -11,11 +11,7 @@ class Ticker extends \Symfony\Component\Console\Command\Command
 {
     const WEBSOCKET_URL = 'wss://api.gemini.com/v1/marketdata/btcusd';
 
-    protected static $askPrice;
-
-    protected static $bidPrice;
-
-    protected static $columns = [
+    protected $columns = [
         'Lowest Ask',
         'Highest Bid',
         'Spread',
@@ -26,8 +22,10 @@ class Ticker extends \Symfony\Component\Console\Command\Command
         "Heartbeat"
     ];
 
-    protected static $lastMsg;
-    protected static $secondToLastMsg;
+    /**
+     * @var int
+     */
+    protected $socketSequence = 0;
 
     protected function configure()
     {
@@ -35,46 +33,35 @@ class Ticker extends \Symfony\Component\Console\Command\Command
         $this->setDescription('BTC/USD Pair Live Pricing Ticker');
     }
 
-    public static function getAskPrice()
-    {
-        return self::$askPrice;
-    }
-
-    public static function setAskPrice($price)
-    {
-        self::$askPrice = $price;
-    }
-
-    public static function getBidPrice()
-    {
-        return self::$bidPrice;
-    }
-
-    public static function setBidPrice($price)
-    {
-        self::$bidPrice = $price;
-    }
-
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->connect($output);
-
+        while (true) {
+            $this->connect($output);
+        }
     }
 
     public function connect(OutputInterface $output)
     {
+        $this->socketSequence = 0;
         $loop = \React\EventLoop\Factory::create();
         $connector = new \Ratchet\Client\Connector($loop);
         $connector(self::WEBSOCKET_URL)
             ->then(function(\Ratchet\Client\WebSocket $conn) use ($output) {
                 $conn->on('message', function(\Ratchet\RFC6455\Messaging\MessageInterface $msg) use ($conn, $output) {
                     $msg = json_decode($msg);
+                    if ($msg->socket_sequence != 0) {
+                        if ($this->socketSequence <> $msg->socket_sequence-1) {
+                            $conn->close(1000, 'Non-sequential socket squence detected, reconnecting...');
+                            return;
+                        }
+                        $this->socketSequence = $msg->socket_sequence;
+                    }
                     switch ($msg->type) {
                         case 'heartbeat':
                             break;
 
                         case 'update':
-                            self::processUpdate($msg, $output, $conn);
+                            $this->processUpdate($msg, $output, $conn);
                             break;
 
                         default:
@@ -84,7 +71,7 @@ class Ticker extends \Symfony\Component\Console\Command\Command
                 });
 
                 $conn->on('close', function($code = null, $reason = null) {
-                    echo "Connection Closed ($code - $reason)\n";
+                    echo "\nConnection Closed ($code - $reason)\r\n\r\n\r\n\r\n";
                 });
             },
             function(\Exception $e) use ($loop) {
@@ -123,41 +110,30 @@ class Ticker extends \Symfony\Component\Console\Command\Command
             }
         }
         if ($msg->events[0]->type == 'change' && $msg->events[0]->reason == 'initial') {
-            $output->writeln(self::getHeaders());
+            $output->writeln($this->getHeaders());
         }
+
+        $columns = $this->getCurrentState();
+        echo "\t",implode("\t",$columns),"\r";
+    }
+
+    protected function getHeaders()
+    {
+        $headers = "\t";
+        for ($i = 0, $j = count($this->columns); $i < $j; $i++) {
+            if ($i <> 0) {
+                $headers .= "\t";
+            }
+            $headers .= Format::underline($this->columns[$i]);
+        }
+        return $headers;
+    }
+
+    protected function getCurrentState()
+    {
         $askPrice = Book::getAskPrice();
         $bidPrice = Book::getBidPrice();
         $spread = floatval(number_format($askPrice - $bidPrice, 2));
-
-        // Something fucked up... need to debug it
-        if ($spread < 0) {
-            $conn->close();
-            // trim the book to a readable size
-            $book = Book::getBook();
-            $i = 0;
-            foreach (array_keys($book['ask']) as $key) {
-                if ($i > 10) {
-                    unset($book['ask'][$key]);
-                }
-                $i++;
-            }
-            $count = count($book['bid']);
-            $i = 0;
-            foreach (array_keys($book['bid']) as $key) {
-                unset($book['bid'][$key]);
-                $i++;
-                if ($count - $i = 10) {
-                    break;
-                }
-            }
-            \Zend_Debug::dump([
-                'book' => $book,
-                'second to last message' => Ticker::$secondToLastMsg,
-                'last message' => Ticker::$lastMsg,
-                'current message' => $msg
-            ]);
-            exit;
-        }
         $lastTrade = Book::getLastTrade();
         $columns = [
             Book::getAskPrice(),
@@ -169,8 +145,8 @@ class Ticker extends \Symfony\Component\Console\Command\Command
             $lastTrade['time'] ? date('H:i:s', $lastTrade['time']) : '',
             microtime(true)
         ];
-        for ($i = 0, $j = count(Ticker::$columns); $i < $j; $i++) {
-            while (strlen($columns[$i]) < strlen(Ticker::$columns[$i])) {
+        for ($i = 0, $j = count($this->columns); $i < $j; $i++) {
+            while (strlen($columns[$i]) < strlen($this->columns[$i])) {
                 $columns[$i] = ' '.$columns[$i];
             }
         }
@@ -178,21 +154,6 @@ class Ticker extends \Symfony\Component\Console\Command\Command
         $columns[1] = Format::green($columns[1]);
         $columns[3] = $lastTrade['maker'] == 'bid' ? Format::red($columns[3]) : Format::green($columns[3]);
 
-        echo "\t",implode("\t", $columns),"\r";
-
-        Ticker::$secondToLastMsg = Ticker::$lastMsg;
-        Ticker::$lastMsg = $msg;
-    }
-
-    protected function getHeaders()
-    {
-        $headers = "\t";
-        for ($i = 0, $j = count(Ticker::$columns); $i < $j; $i++) {
-            if ($i <> 0) {
-                $headers .= "\t";
-            }
-            $headers .= Format::underline(Ticker::$columns[$i]);
-        }
-        return $headers;
+        return $columns;
     }
 }
