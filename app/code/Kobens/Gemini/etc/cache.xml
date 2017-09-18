@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Cache/etc/cache.xsd">
+    <type name="gemini_market_btcusd" translate="label,description" instance="Kobens\Gemini\Model\Cache\MarketData\BTC\USD">
+        <label>Gemini Market Data (BTC/USD)</label>
+        <description>Publically accessible BTC/USD market data such as the order book, last trade price, spread, etc.</description>
+    </type>
+    <type name="gemini_market_btceth" translate="label,description" instance="Kobens\Gemini\Model\Cache\MarketData\BTC\ETH">
+        <label>Gemini Market Data (BTC/ETH)</label>
+        <description>Publically accessible BTC/ETH market data such as the order book, last trade price, spread, etc.</description>
+    </type>
+    <type name="gemini_market_ethusd" translate="label,description" instance="Kobens\Gemini\Model\Cache\MarketData\ETH\USD">
+        <label>Gemini Market Data (ETH/USD)</label>
+        <description>Publically accessible ETH/USD market data such as the order book, last trade price, spread, etc.</description>
+    </type>
+    
+    <type name="gemini_order_btcusd" translate="label,description" instance="Kobens\Gemini\Model\Cache\OrderData\BTC\USD">
+        <label>Gemini Order Data (BTC/USD) </label>
+        <description>Private order BTC/USD data such on the public books such as open buys and sells.</description>
+    </type>
+    <type name="gemini_order_btceth" translate="label,description" instance="Kobens\Gemini\Model\Cache\OrderData\BTC\ETH">
+        <label>Gemini Order Data (BTC/ETH) </label>
+        <description>Private order BTC/ETH data such on the public books such as open buys and sells.</description>
+    </type>
+    <type name="gemini_order_ethusd" translate="label,description" instance="Kobens\Gemini\Model\Cache\OrderData\ETH\USD">
+        <label>Gemini Order Data (ETH/USD) </label>
+        <description>Private order ETH/USD data such on the public books such as open buys and sells.</description>
+    </type>
+    
+</config>
