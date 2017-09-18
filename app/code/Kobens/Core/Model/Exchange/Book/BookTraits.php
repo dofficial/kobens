@@ -110,8 +110,8 @@ trait BookTraits
     public function getBook()
     {
         $book = unserialize($this->cache->load($this->getBookCacheKey()));
-        if ($book === false) {
-            throw new \Exception('Book Not Initialized');
+        if (!$book) {
+            throw new \Kobens\Core\Exception\ClosedBookException();
         }
         return ;
     }

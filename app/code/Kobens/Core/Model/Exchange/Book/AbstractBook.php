@@ -59,6 +59,7 @@ abstract class AbstractBook implements BookInterface
      */
     public function getAskPrice()
     {
+        \Zend_Debug::dump($this->getBook());exit;
         $prices = $this->getBook()['ask'];
         ksort($prices);
         return floatval(array_keys($prices)[0]);

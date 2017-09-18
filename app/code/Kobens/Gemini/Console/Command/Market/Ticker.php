@@ -28,12 +28,12 @@ class Ticker extends \Symfony\Component\Console\Command\Command
     protected $socketSequence = 0;
 
     /**
-     * @var \Kobens\Gemini\Api\V1\WebSocket\MarketData\BTC\USD
+     * @var \Kobens\Gemini\Model\Exchange\Book\BTC\USD
      */
     protected $btcUsd;
 
     public function __construct(
-        \Kobens\Gemini\Api\V1\WebSocket\MarketData\BTC\USD\Proxy $btcUsd,
+        \Kobens\Gemini\Model\Exchange\Book\BTC\USD\Proxy $btcUsd,
         $name = 'kobens:gemini:market:ticker'
     ) {
         parent::__construct($name);
@@ -48,12 +48,41 @@ class Ticker extends \Symfony\Component\Console\Command\Command
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln($this->getHeaders());
-        while (true) {
-            echo self::STDOUT_PREFIX, implode(self::STDOUT_COLUMN_SEPARATOR, $this->getCurrentState()), "\r";
-            usleep(500000); // 500 milliseconds
-        }
+        $this->startTicker($output);
     }
+
+    protected function startTicker(OutputInterface $output)
+    {
+        while (true) {
+            try {
+                $output->writeln($this->getHeaders());
+                while (true) {
+                    echo
+                        self::STDOUT_PREFIX,
+                        implode(
+                            self::STDOUT_COLUMN_SEPARATOR,
+                            $this->getCurrentState()
+                        ),
+                        "\r"
+                    ;
+                    usleep(500000); // 500 milliseconds
+                }
+            } catch (\Kobens\Core\Exception\ClosedBookException $e) {
+                $bookIsClosed = true;
+                $output->writeln('Book is closed, waiting for book to be opened...');
+                while ($bookIsClosed) {
+                    try {
+                        $this->getCurrentState();
+                        $bookIsClosed = false;
+                    } catch (\Kobens\Core\Exception\ClosedBookException $e) {
+                        sleep(1);
+                    }
+                }
+            }
+        }
+
+    }
+
 
     protected function getHeaders()
     {
@@ -72,7 +101,6 @@ class Ticker extends \Symfony\Component\Console\Command\Command
         $askPrice = $this->btcUsd->getAskPrice();
         $bidPrice = $this->btcUsd->getBidPrice();
         $spread = $this->btcUsd->getSpread();
-//         $spread = floatval(number_format($askPrice - $bidPrice, 2));
         $lastTrade = $this->btcUsd->getLastTrade();
 
         $columns = [

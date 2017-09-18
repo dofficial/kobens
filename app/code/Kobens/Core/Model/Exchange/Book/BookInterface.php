@@ -53,20 +53,6 @@ interface BookInterface
     public function getLastTrade();
 
     /**
-     * @param \Kobens\Core\Model\Exchange\Book\Trade\TradeInterface $trade
-     */
-    public function setLastTrade(\Kobens\Core\Model\Exchange\Book\Trade\TradeInterface $trade);
-
-    /**
-     * Update the market's order book
-     *
-     * @param string $makerSide
-     * @param float $quote
-     * @param float $remaining
-     */
-    public function updateBook($makerSide, $quote, $remaining);
-
-    /**
      * @return decimal
      */
     public function getAskPrice();
