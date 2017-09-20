@@ -111,7 +111,7 @@ trait BookTraits
     {
         $book = unserialize($this->cache->load($this->getBookCacheKey()));
         if (!$book) {
-            throw new \Kobens\Core\Exception\ClosedBookException();
+            throw new \Kobens\Core\Exception\ClosedBookException('Market book is not instantialized.');
         }
         return ;
     }
