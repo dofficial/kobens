@@ -105,7 +105,8 @@ trait BookTraits
     /**
      * Return the market's order book.
      *
-     * @return array
+     * @throws \Kobens\Core\Exception\ClosedBookException
+     * @return mixed
      */
     public function getBook()
     {
@@ -113,7 +114,7 @@ trait BookTraits
         if (!$book) {
             throw new \Kobens\Core\Exception\ClosedBookException('Market book is not instantialized.');
         }
-        return ;
+        return $book;
     }
 
     /**

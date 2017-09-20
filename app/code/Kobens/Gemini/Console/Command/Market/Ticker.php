@@ -75,6 +75,7 @@ class Ticker extends \Symfony\Component\Console\Command\Command
                         $this->getCurrentState();
                         $bookIsClosed = false;
                     } catch (\Kobens\Core\Exception\ClosedBookException $e) {
+                        $output->writeln('Book is closed... waiting 5 secods before re-attempting.');
                         sleep(1);
                     }
                 }
@@ -107,8 +108,8 @@ class Ticker extends \Symfony\Component\Console\Command\Command
             $askPrice,
             $bidPrice,
             $spread,
-            $lastTrade->getPrice(),
-            $lastTrade->getQuantity(),
+            !$lastTrade ? '' : $lastTrade->getPrice(),
+            !$lastTrade ? '' : $lastTrade->getQuantity(),
 //             round($lastTrade['amount'] * $lastTrade['price'], 2, PHP_ROUND_HALF_UP),
 //             $lastTrade['time'] ? date('H:i:s', $lastTrade['time']) : '',
 //             microtime(true)
@@ -120,7 +121,11 @@ class Ticker extends \Symfony\Component\Console\Command\Command
         }
         $columns[0] = Format::red($columns[0]);
         $columns[1] = Format::green($columns[1]);
-        $columns[3] = $lastTrade->getMakerSide() == 'bid' ? Format::red($columns[3]) : Format::green($columns[3]);
+        if ($lastTrade) {
+            $columns[3] = $lastTrade->getMakerSide() == 'bid'
+                ? Format::red($columns[3])
+                : Format::green($columns[3]);
+        }
 
         return $columns;
     }

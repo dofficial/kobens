@@ -68,7 +68,11 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
                                 break;
 
                             case 'update':
-                                $this->processEvents($msg->events, $msg->timestampms);
+                                try {
+                                    $this->processEvents($msg->events, $msg->timestampms);
+                                } catch (\Kobens\Core\Exception\ClosedBookException $e) {
+                                    $conn->close(10000, 'Closed book detected. reconnecting...');
+                                }
                                 break;
 
                             default:
@@ -79,6 +83,9 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
                     }
                 });
                 $conn->on('close', function($code = null, $reason = null) {
+                    if ($reason) {
+                        echo "\n$reason\n";
+                    }
                     $this->openBook();
                 });
             },
@@ -140,4 +147,5 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
             }
         }
     }
+
 }
