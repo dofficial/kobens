@@ -2,6 +2,10 @@
 
 namespace Kobens\Gemini\Api\V1\WebSocket\MarketData;
 
+/**
+ * @category    \Kobens
+ * @package     \Kobens\Gemini
+ */
 abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keeper\AbstractKeeper
 {
     const WEBSOCKET_URL = 'wss://api.gemini.com/v1/marketdata/:pair';
@@ -17,6 +21,9 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
     protected $socketSequence;
 
     /**
+     * Return the url for the market's websocket API corresponding to
+     * the book's currency pair.
+     *
      * @return string
      */
     protected function getWebSocketUrl()
@@ -31,6 +38,13 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
         return $this->websocketUrl;
     }
 
+    /**
+     * Open the market's order book and maintain an up to date copy of it by
+     * sending event data off to the book keeper.
+     *
+     * {@inheritDoc}
+     * @see \Kobens\Core\Model\Exchange\Book\Keeper\AbstractKeeper::openBook()
+     */
     public function openBook()
     {
         $this->socketSequence = 0;
@@ -75,6 +89,12 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
         $loop->run();
     }
 
+    /**
+     * Populate the market's order book
+     *
+     * {@inheritDoc}
+     * @see \Kobens\Core\Model\Exchange\Book\Keeper\AbstractKeeper::populateBook()
+     */
     protected function populateBook(array $events)
     {
         if ($events[0]->reason !== 'initial') {
@@ -91,6 +111,8 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
     }
 
     /**
+     * Process a set of events for the market's order book.
+     *
      * @param array $events
      * @param decimal $timestampms
      */
