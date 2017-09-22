@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Cache/etc/cache.xsd">
+    <type name="kobens_gemini" translate="label,description" instance="Kobens\Gemini\Model\Cache">
+        <label>Gemini Exchange</label>
+        <description>Cache type for the Gemini Exchange</description>
+    </type>
+</config>

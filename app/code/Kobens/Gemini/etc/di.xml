@@ -3,13 +3,19 @@
     <type name="Magento\Framework\Console\CommandListInterface">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="kobens_gemini_ticker_btcusd" xsi:type="object">Kobens\Gemini\Console\Command\BTC\USD\Ticker</item>
+                <item name="gemini_market_bookkeeper" xsi:type="object">Kobens\Gemini\Console\Command\Market\BookKeeper</item>
+                <item name="gemini_market_ticker" xsi:type="object">Kobens\Gemini\Console\Command\Market\Ticker</item>
             </argument>
         </arguments>
     </type>
-    <type name="Kobens\Gemini\Console\Command\BTC\USD\Ticker">
+    <type name="Kobens\Gemini\Model\Exchange">
         <arguments>
-            <argument name="name" xsi:type="string">kobens:gemini:public:ticker</argument>
+            <argument name="cacheInterface" xsi:type="object">Kobens\Gemini\Model\Cache</argument>
+            <argument name="pairs" xsi:type="array">
+                <item name="btcusd" xsi:type="object">Kobens\Core\Model\Exchange\Pair\BTC\USD</item>
+                <item name="ethusd" xsi:type="object">Kobens\Core\Model\Exchange\Pair\ETH\USD</item>
+                <item name="ethbtc" xsi:type="object">Kobens\Core\Model\Exchange\Pair\ETH\BTC</item>
+            </argument>
         </arguments>
     </type>
 </config>
