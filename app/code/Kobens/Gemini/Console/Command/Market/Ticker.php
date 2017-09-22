@@ -214,7 +214,7 @@ class Ticker extends \Symfony\Component\Console\Command\Command
                     $bookIsClosed = false;
                     $output->writeln("Open Book detected...");
                 } catch (\Kobens\Core\Exception\ClosedBookException $e) {
-                    sleep(5);
+                    usleep($this->refreshRate);
                 }
             }
             $this->startTicker($output);
