@@ -65,6 +65,10 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
 
                         switch ($msg->type) {
                             case 'heartbeat':
+                                // TODO: Gemini recommends logging and retaining all heartbeat messages. If your WebSocket connection is unreliable, please contact Gemini support with this log.
+                                // FIXME: If you miss one or more heartbeats, disconnect and reconnect.
+                                $book = $this->cache->load($this->getBookCacheKey());
+                                $this->cache->save($book, $this->getBookCacheKey());
                                 break;
 
                             case 'update':
