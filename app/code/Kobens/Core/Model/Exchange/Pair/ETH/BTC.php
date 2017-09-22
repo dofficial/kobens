@@ -6,19 +6,19 @@ namespace Kobens\Core\Model\Exchange\Pair\ETH;
  * @category    \Kobens
  * @package     \Kobens\Core
  */
-class USD extends \Kobens\Core\Model\Exchange\Pair\AbstractPair
+class BTC extends \Kobens\Core\Model\Exchange\Pair\AbstractPair
 {
-    const PAIR = 'ETH/USD';
+    const PAIR = 'ETH/BTC';
 
     /**
      * Constructor
      *
      * @param \Kobens\Core\Model\Currency\Virtual\ETH $baseCurrency
-     * @param \Kobens\Core\Model\Currency\Fiat\USD $quoteCurrency
+     * @param \Kobens\Core\Model\Currency\Virtual\BTC $quoteCurrency
      */
     public function __construct(
         \Kobens\Core\Model\Currency\Virtual\ETH $baseCurrency,
-        \Kobens\Core\Model\Currency\Fiat\USD $quoteCurrency
+        \Kobens\Core\Model\Currency\Virtual\BTC $quoteCurrency
     ) {
         parent::__construct($baseCurrency, $quoteCurrency);
     }

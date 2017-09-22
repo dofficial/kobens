@@ -21,6 +21,14 @@ interface CurrencyInterface
     public function getMainUnitName();
 
     /**
+     * Return the abbreviation for the main unit
+     * Example: USD | BTC | ETH
+     *
+     * @return string
+     */
+    public function getMainUnitAbbreviation();
+
+    /**
      * Return the name of the currency's subunit.
      * Example: Cent | Satoshi | Wei
      *

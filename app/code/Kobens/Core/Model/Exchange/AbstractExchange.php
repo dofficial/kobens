@@ -5,13 +5,24 @@ namespace Kobens\Core\Model\Exchange;
 abstract class AbstractExchange implements ExchangeInterface
 {
     /**
+     * @var \Magento\Framework\Cache\FrontendInterface
+     */
+    protected $cache;
+
+    /**
      * @var \Kobens\Core\Model\Exchange\Pair\PairInterface[]
      */
     protected $pairs = [];
 
+    /**
+     * @param \Magento\Framework\Cache\FrontendInterface $cacheInterface
+     * @param \Kobens\Core\Model\Exchange\Pair\PairInterface[] $pairs
+     */
     public function __construct(
+        \Magento\Framework\Cache\FrontendInterface $cacheInterface,
         array $pairs = []
     ) {
+        $this->cache = $cacheInterface;
         $this->addPairs($pairs);
     }
 
@@ -34,6 +45,15 @@ abstract class AbstractExchange implements ExchangeInterface
             $quote = $pair->getQuoteCurrency()->getPairIdentity();
             $this->pairs[$base.'/'.$quote] = $pair;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \Kobens\Core\Model\Exchange\ExchangeInterface::getCache()
+     */
+    public function getCache()
+    {
+        return $this->cache;
     }
 
     /**

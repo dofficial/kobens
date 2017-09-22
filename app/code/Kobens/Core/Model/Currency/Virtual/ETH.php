@@ -2,14 +2,16 @@
 
 namespace Kobens\Core\Model\Currency\Virtual;
 
-class BTC implements \Kobens\Core\Model\Currency\CurrencyInterface
+class ETH implements \Kobens\Core\Model\Currency\CurrencyInterface
 {
     const CURRENCY_NAME = 'Ethereum';
     const MAIN_UNIT = 'Ether';
+    const MAIN_UNIT_ABBREVIATION = 'ETH';
     const SUB_UNIT = 'Wei';
     const DENOMINATION = 18;
     const CACHE_IDENTIFIER = 'eth';
     const PAIR_IDENTIFIER = 'eth';
+
 
     /**
      * {@inheritDoc}
@@ -18,6 +20,11 @@ class BTC implements \Kobens\Core\Model\Currency\CurrencyInterface
     public function getCurrencyName()
     {
         return self::CURRENCY_NAME;
+    }
+
+    public function getMainUnitAbbreviation()
+    {
+        return self::MAIN_UNIT_ABBREVIATION;
     }
 
     /**

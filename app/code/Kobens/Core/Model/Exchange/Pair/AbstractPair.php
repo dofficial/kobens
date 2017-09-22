@@ -16,6 +16,11 @@ abstract class AbstractPair implements PairInterface
     protected $quoteCurrency;
 
     /**
+     * @var string
+     */
+    protected $pairSymbol;
+
+    /**
      * @param Context $context
      */
     public function __construct(
@@ -24,6 +29,12 @@ abstract class AbstractPair implements PairInterface
     ) {
         $this->baseCurrency = $baseCurrency;
         $this->quoteCurrency = $quoteCurrency;
+        $this->pairSymbol = $baseCurrency->getPairIdentity().'/'.$quoteCurrency->getPairIdentity();
+    }
+
+    public function getPairSymbol()
+    {
+        return $this->pairSymbol;
     }
 
     /**
@@ -53,7 +64,7 @@ abstract class AbstractPair implements PairInterface
     {
         return round(
             $baseQty * $quoteRate,
-            $this->baseCurrency->getSubunitDenomination(),
+            $this->quoteCurrency->getSubunitDenomination(),
             PHP_ROUND_HALF_UP
         );
     }

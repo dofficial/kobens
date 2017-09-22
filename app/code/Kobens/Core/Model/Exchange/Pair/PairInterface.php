@@ -4,6 +4,8 @@ namespace Kobens\Core\Model\Exchange\Pair;
 
 interface PairInterface
 {
+    public function getPairSymbol();
+
     /**
      * @return \Kobens\Core\Model\Currency\CurrencyInterface
      */

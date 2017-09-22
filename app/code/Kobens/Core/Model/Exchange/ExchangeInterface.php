@@ -15,4 +15,9 @@ interface ExchangeInterface
      */
     public function getPair($key);
 
+    /**
+     * @return \Magento\Framework\Cache\FrontendInterface
+     */
+    public function getCache();
+
 }

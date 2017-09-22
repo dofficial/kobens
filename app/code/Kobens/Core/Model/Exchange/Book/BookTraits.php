@@ -5,6 +5,14 @@ namespace Kobens\Core\Model\Exchange\Book;
 trait BookTraits
 {
     /**
+     * Time (in seconds) to consider a book closed if
+     * no updates have occurred between now and last update.
+     *
+     * @var integer
+     */
+    protected $bookExpiration = 5;
+
+    /**
      * The exchange market's order book
      *
      * @var array
@@ -61,8 +69,8 @@ trait BookTraits
             $this->cacheKeyBook = implode('::', [
                 'kobens',
                 $this->getExchange()->getCacheKey(),
-                $this->getQuoteCurrency()->getCacheIdentifier(),
-                'book'
+                'market-book',
+                $this->pair->getPairSymbol(),
             ]);
         }
         return $this->cacheKeyBook;
@@ -110,11 +118,13 @@ trait BookTraits
      */
     public function getBook()
     {
-        $book = unserialize($this->cache->load($this->getBookCacheKey()));
-        if (!$book) {
-            throw new \Kobens\Core\Exception\ClosedBookException('Market book is not instantialized.');
+        $isAlive = $this->cache->test($this->getBookCacheKey());
+        if (!$isAlive) {
+            throw new \Kobens\Core\Exception\ClosedBookException('Market book is closed.');
+        } elseif (time() - $isAlive >= $this->bookExpiration) {
+            throw new \Kobens\Core\Exception\ClosedBookException('Market book has expired.');
         }
-        return $book;
+        return unserialize($this->cache->load($this->getBookCacheKey()));
     }
 
     /**

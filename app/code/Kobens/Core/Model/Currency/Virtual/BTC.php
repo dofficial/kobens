@@ -6,6 +6,7 @@ class BTC implements \Kobens\Core\Model\Currency\CurrencyInterface
 {
     const CURRENCY_NAME = 'Bitcoin';
     const MAIN_UNIT = 'Bitcoin';
+    const MAIN_UNIT_ABBREVIATION = 'BTC';
     const SUB_UNIT = 'Satoshi';
     const DENOMINATION = 8;
     const CACHE_IDENTIFIER = 'btc';
@@ -27,6 +28,11 @@ class BTC implements \Kobens\Core\Model\Currency\CurrencyInterface
     public function getMainUnitName()
     {
         return self::MAIN_UNIT;
+    }
+
+    public function getMainUnitAbbreviation()
+    {
+        return self::MAIN_UNIT_ABBREVIATION;
     }
 
     /**

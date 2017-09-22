@@ -13,12 +13,11 @@ abstract class AbstractBook implements BookInterface
      */
     public function __construct(
         \Kobens\Core\Model\Exchange\ExchangeInterface $exchangeInterface,
-        \Kobens\Core\Model\Exchange\Pair\PairInterface $pairInterface,
-        \Magento\Framework\Cache\FrontendInterface $cacheInterface
+        \Kobens\Core\Model\Exchange\Pair\PairInterface $pairInterface
     ) {
+        $this->cache = $exchangeInterface->getCache();
         $this->exchange = $exchangeInterface;
         $this->pair = $pairInterface;
-        $this->cache = $cacheInterface;
         $this->_construct();
     }
 
@@ -85,8 +84,7 @@ abstract class AbstractBook implements BookInterface
         $ask = $this->getAskPrice();
         $bid = $this->getBidPrice();
         $decimals = $this->getQuoteCurrency()->getSubunitDenomination();
-        $spread = number_format($ask - $bid, $decimals);
-        return floatVal($spread);
+        return number_format($ask - $bid, $decimals);
     }
 
 }

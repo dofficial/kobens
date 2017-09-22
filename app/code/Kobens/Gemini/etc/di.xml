@@ -10,8 +10,11 @@
     </type>
     <type name="Kobens\Gemini\Model\Exchange">
         <arguments>
+            <argument name="cacheInterface" xsi:type="object">Kobens\Gemini\Model\Cache</argument>
             <argument name="pairs" xsi:type="array">
                 <item name="btcusd" xsi:type="object">Kobens\Core\Model\Exchange\Pair\BTC\USD</item>
+                <item name="ethusd" xsi:type="object">Kobens\Core\Model\Exchange\Pair\ETH\USD</item>
+                <item name="ethbtc" xsi:type="object">Kobens\Core\Model\Exchange\Pair\ETH\BTC</item>
             </argument>
         </arguments>
     </type>

@@ -84,7 +84,7 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
                 });
                 $conn->on('close', function($code = null, $reason = null) {
                     if ($reason) {
-                        echo "\n$reason\n";
+                        // TODO: Do anything with this?
                     }
                     $this->openBook();
                 });
