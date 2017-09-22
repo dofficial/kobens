@@ -1,0 +1,17 @@
+{
+	"name" : "kobens/gemini",
+	"description" : "Extension for interacting with the Gemini exchange.",
+	"require" : {
+		"kobens/core" : "0.0.*"
+	},
+	"type" : "magento2-module",
+	"version" : "0.0.2",
+	"autoload" : {
+		"files" : [
+			"registration.php"
+		],
+		"psr-4" : {
+			"Kobens\\Gemini\\" : ""
+		}
+	}
+}
