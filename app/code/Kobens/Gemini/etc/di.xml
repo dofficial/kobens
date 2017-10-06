@@ -5,6 +5,7 @@
             <argument name="commands" xsi:type="array">
                 <item name="gemini_market_bookkeeper" xsi:type="object">Kobens\Gemini\Console\Command\Market\BookKeeper</item>
                 <item name="gemini_market_ticker" xsi:type="object">Kobens\Gemini\Console\Command\Market\Ticker</item>
+                <item name="gemini_order_list" xsi:type="object">Kobens\Gemini\Console\Command\Order\ListOrder</item>
             </argument>
         </arguments>
     </type>
