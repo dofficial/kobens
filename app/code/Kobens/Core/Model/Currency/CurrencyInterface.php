@@ -52,6 +52,15 @@ interface CurrencyInterface
 
     /**
      * Return the string value to use for this currency in a pair
+     *
+     * @return string
      */
     public function getPairIdentity();
+
+    /**
+     * Return the currency type (Fiat or Crypto)
+     *
+     * @return string
+     */
+    public function getCurrencyType();
 }

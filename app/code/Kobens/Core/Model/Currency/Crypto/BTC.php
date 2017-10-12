@@ -1,8 +1,8 @@
 <?php
 
-namespace Kobens\Core\Model\Currency\Virtual;
+namespace Kobens\Core\Model\Currency\Crypto;
 
-class BTC implements \Kobens\Core\Model\Currency\CurrencyInterface
+class BTC extends AbstractCrypto
 {
     const CURRENCY_NAME = 'Bitcoin';
     const MAIN_UNIT = 'Bitcoin';

@@ -2,7 +2,7 @@
 
 namespace Kobens\Core\Model\Currency\Fiat;
 
-class USD implements \Kobens\Core\Model\Currency\CurrencyInterface
+class USD extends AbstractFiat
 {
     const CURRENCY_NAME = 'US Dollar';
     const MAIN_UNIT = 'Dollar';
@@ -11,7 +11,6 @@ class USD implements \Kobens\Core\Model\Currency\CurrencyInterface
     const DENOMINATION = 2;
     const CACHE_IDENTIFIER = 'usd';
     const PAIR_IDENTIFIER = 'usd';
-
 
     /**
      * {@inheritDoc}

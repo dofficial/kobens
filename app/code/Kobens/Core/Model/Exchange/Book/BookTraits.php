@@ -50,8 +50,7 @@ trait BookTraits
     protected $cacheKeyLastTrade;
 
     /**
-     * {@inheritDoc}
-     * @see \Kobens\Core\Model\Exchange\Book\BookInterface::getExchange()
+     * @return \Kobens\Core\Model\Exchange\ExchangeInterface
      */
     public function getExchange()
     {

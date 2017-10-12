@@ -1,8 +1,8 @@
 <?php
 
-namespace Kobens\Core\Model\Currency\Virtual;
+namespace Kobens\Core\Model\Currency\Crypto;
 
-class ETH implements \Kobens\Core\Model\Currency\CurrencyInterface
+class ETH extends AbstractCrypto
 {
     const CURRENCY_NAME = 'Ethereum';
     const MAIN_UNIT = 'Ether';

@@ -13,12 +13,12 @@ class BTC extends \Kobens\Core\Model\Exchange\Pair\AbstractPair
     /**
      * Constructor
      *
-     * @param \Kobens\Core\Model\Currency\Virtual\ETH $baseCurrency
-     * @param \Kobens\Core\Model\Currency\Virtual\BTC $quoteCurrency
+     * @param \Kobens\Core\Model\Currency\Crypto\ETH $baseCurrency
+     * @param \Kobens\Core\Model\Currency\Crypto\BTC $quoteCurrency
      */
     public function __construct(
-        \Kobens\Core\Model\Currency\Virtual\ETH $baseCurrency,
-        \Kobens\Core\Model\Currency\Virtual\BTC $quoteCurrency
+        \Kobens\Core\Model\Currency\Crypto\ETH $baseCurrency,
+        \Kobens\Core\Model\Currency\Crypto\BTC $quoteCurrency
     ) {
         parent::__construct($baseCurrency, $quoteCurrency);
     }
