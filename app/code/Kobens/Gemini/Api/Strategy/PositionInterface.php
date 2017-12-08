@@ -2,26 +2,30 @@
 
 namespace Kobens\Gemini\Api\Strategy;
 
-interface Position
+interface PositionInterface
 {
-    const ID                    = 'entity_id';
+    const MAIN_TABLE            = 'kobens_gemini_strategy_position';
+    
+    const POSITION_ID           = 'position_id';
     const STRATEGY_ID           = 'strategy_id';
-    const PAIR_SYMBOL           = 'pair_symbol';
-    const POSITION_OPEN_ID      = 'position_open_id';
-    const POSITION_CLOSE_ID     = 'position_close_id';
-    const POSITION_STATUS       = 'position_status';
-    const GEMINI_OPEN_ID        = 'gemini_open_id';
-    const GEMINI_CLOSE_ID       = 'gemini_close_id';
-    const OPEN_CREATED_AT       = 'open_created_at';
+    const API_ID_OPEN           = 'api_id_open';
+    const API_ID_CLOSE          = 'api_id_close';
+    const GEMINI_ID_OPEN        = 'gemini_id_open';
+    const GEMINI_ID_CLOSE       = 'gemini_id_close';
+    const CREATED_AT            = 'created_at';
+    const STATUS                = 'status';
+    const OPEN_BOOKED_AT        = 'open_booked_at';
     const OPEN_FILLED_AT        = 'open_filled_at';
     const OPEN_PRICE            = 'open_price';
     const OPEN_AMOUNT           = 'open_amount';
+    const OPEN_AMOUNT_FILLED    = 'open_amount_filled';
     const OPEN_BPS              = 'open_bps';
     const OPEN_FEE              = 'open_fee';
-    const CLOSE_CREATED_AT      = 'close_created_at';
+    const CLOSE_BOOKED_AT       = 'close_booked_at';
     const CLOSE_FILLED_AT       = 'close_filled_at';
     const CLOSE_PRICE           = 'close_price';
     const CLOSE_AMOUNT          = 'close_amount';
+    const CLOSE_AMOUNT_FILLED   = 'close_amount_filled';
     const CLOSE_BPS             = 'close_bps';
     const CLOSE_FEE             = 'close_fee';
     const QUOTE_GAIN            = 'quote_gain';
