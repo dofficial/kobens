@@ -95,6 +95,7 @@ abstract class AbstractBookKeeper extends \Kobens\Core\Model\Exchange\Book\Keepe
             },
             function(\Exception $e) use ($loop) {
                 $loop->stop();
+                die($e->getMessage());
             }
         );
         $loop->run();
